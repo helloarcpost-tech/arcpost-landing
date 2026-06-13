@@ -1,757 +1,1229 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arcpost — AI/Tech Content, Delivered Monthly</title>
+<title>Arcpost: Content that ships every month</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:       #FFFFFF;
-    --bg2:      #F5F5F7;
-    --bg3:      #E8E8ED;
-    --ink:      #1D1D1F;
-    --muted:    #6E6E73;
-    --faint:    #AEAEB2;
-    --border:   #D2D2D7;
-    --accent:   #0071E3;
-    --accent-h: #0077ED;
-    --mono:     'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
-    --sans:     -apple-system, BlinkMacSystemFont, 'SF Pro Display',
-                'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
-  }
 
-  [data-theme="dark"] {
-    --bg:       #000000;
-    --bg2:      #1C1C1E;
-    --bg3:      #2C2C2E;
-    --ink:      #F5F5F7;
-    --muted:    #98989D;
-    --faint:    #636366;
-    --border:   #3A3A3C;
-    --accent:   #2997FF;
-    --accent-h: #147CE5;
-  }
+/* ── TOKENS ─────────────────────────────────────── */
+:root {
+  --bg:       #FAFAF8;
+  --bg2:      #F2F2EF;
+  --bg3:      #E6E6E2;
+  --border:   #DEDED8;
+  --ink:      #18181B;
+  --muted:    #6B6B72;
+  --faint:    #AEAEB2;
+  --amber:    #0071E3;
+  --amber-d:  #0077ED;
+  --serif:    'DM Serif Display', Georgia, serif;
+  --sans:     'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; font-size: 16px; }
+[data-theme="dark"] {
+  --bg:       #0D0D0C;
+  --bg2:      #161614;
+  --bg3:      #1E1E1B;
+  --border:   #2A2A26;
+  --ink:      #F0EDE6;
+  --muted:    #7A766F;
+  --faint:    #3D3D38;
+  --amber:    #2997FF;
+  --amber-d:  #147CE5;
+}
 
-  body {
-    font-family: var(--sans);
-    background: var(--bg);
-    color: var(--ink);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    transition: background 0.25s, color 0.25s;
-  }
+/* ── RESET ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.25s, color 0.25s;
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
 
-  /* ─── NAV ─── */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 200;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 max(24px, 5%);
-    background: transparent;
-    transition: background 0.3s, border-color 0.3s;
-    border-bottom: 1px solid transparent;
-  }
-  nav.scrolled {
-    background: color-mix(in srgb, var(--bg) 80%, transparent);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-color: var(--border);
-  }
-  .nav-logo {
-    font-size: 1.0625rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-    text-decoration: none;
-  }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-  }
-  .nav-links a {
-    font-size: 0.8125rem;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-  .nav-links a:hover { color: var(--ink); }
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .theme-btn {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--bg2);
-    color: var(--muted);
-    font-size: 0.8rem;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-  }
-  .theme-btn:hover { background: var(--bg3); color: var(--ink); }
-  .nav-cta {
-    height: 32px;
-    padding: 0 16px;
-    background: var(--accent);
-    color: #fff;
-    border-radius: 980px;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    text-decoration: none;
-    display: flex; align-items: center;
-    transition: background 0.15s, transform 0.1s;
-    white-space: nowrap;
-  }
-  .nav-cta:hover { background: var(--accent-h); transform: translateY(-1px); }
+/* ── NAV ────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(20px, 5vw, 64px);
+  transition: background 0.3s, border-color 0.3s;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled {
+  background: rgba(250,250,248,0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-color: var(--border);
+}
+[data-theme="dark"] nav.scrolled {
+  background: rgba(13,13,12,0.88);
+}
+.nav-logo {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-mark {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.logo-mark span {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--amber);
+}
+.logo-mark span:nth-child(1) { width: 18px; }
+.logo-mark span:nth-child(2) { width: 12px; opacity: 0.6; }
+.logo-mark span:nth-child(3) { width: 7px; opacity: 0.3; }
 
-  /* ─── HERO ─── */
-  .hero {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 88px max(24px, 5%) 80px;
-    text-align: center;
-  }
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    padding: 5px 12px;
-    border-radius: 980px;
-    margin-bottom: 32px;
-  }
-  .hero-eyebrow span { color: var(--accent); }
-  .hero h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 1.07;
-    color: var(--ink);
-    margin-bottom: 20px;
-  }
-  .hero h1 .dim { color: var(--muted); font-weight: 400; }
-  .hero-sub {
-    font-size: 1.0625rem;
-    color: var(--muted);
-    line-height: 1.6;
-    max-width: 480px;
-    margin: 0 auto 40px;
-    font-weight: 400;
-  }
-  .hero-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 56px;
-  }
-  .btn-blue {
-    height: 44px;
-    padding: 0 24px;
-    background: var(--accent);
-    color: #fff;
-    border-radius: 980px;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    text-decoration: none;
-    display: inline-flex; align-items: center;
-    transition: background 0.15s, transform 0.1s;
-  }
-  .btn-blue:hover { background: var(--accent-h); transform: translateY(-1px); }
-  .btn-ghost {
-    height: 44px;
-    padding: 0 24px;
-    background: transparent;
-    color: var(--accent);
-    border-radius: 980px;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    text-decoration: none;
-    display: inline-flex; align-items: center;
-    transition: background 0.15s;
-  }
-  .btn-ghost:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.nav-links a {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--muted);
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-cta {
+  height: 36px;
+  padding: 0 20px;
+  background: var(--amber);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s, transform 0.1s;
+}
+.nav-cta:hover { background: var(--amber-d); transform: translateY(-1px); }
 
-  /* ─── STATS BAR ─── */
-  .stats-bar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    background: var(--bg2);
-    max-width: 680px;
-    margin: 0 auto;
-  }
-  .stat-item {
-    padding: 20px 0;
-    text-align: center;
-    border-right: 1px solid var(--border);
-  }
-  .stat-item:last-child { border-right: none; }
-  .stat-val {
-    font-family: var(--mono);
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--ink);
-    display: block;
-    margin-bottom: 3px;
-    letter-spacing: -0.02em;
-  }
-  .stat-label {
-    font-size: 0.6875rem;
-    color: var(--muted);
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-  }
+.theme-toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { background: var(--bg3); color: var(--ink); }
+.theme-toggle svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-  /* ─── DIVIDER ─── */
-  .hr { border: none; border-top: 1px solid var(--border); margin: 0 max(24px, 5%); }
+/* ── HERO ───────────────────────────────────────── */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 clamp(20px, 6vw, 88px) clamp(60px, 8vh, 96px);
+  position: relative;
+  overflow: hidden;
+}
 
-  /* ─── SECTION SHARED ─── */
-  .section { padding: 88px max(24px, 5%); max-width: 1080px; margin: 0 auto; }
-  .section-tag {
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-  .section-h {
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    color: var(--ink);
-    margin-bottom: 12px;
-  }
-  .section-sub {
-    font-size: 1rem;
-    color: var(--muted);
-    line-height: 1.6;
-    max-width: 460px;
-  }
+.hero-noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
 
-  /* ─── HOW IT WORKS ─── */
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-top: 52px;
-  }
-  .step {
-    background: var(--bg);
-    padding: 36px 32px;
-    position: relative;
-  }
-  .step-num {
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    color: var(--faint);
-    letter-spacing: 0.06em;
-    margin-bottom: 20px;
-    display: block;
-  }
-  .step-icon {
-    width: 36px; height: 36px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 16px;
-  }
-  .step-icon svg { width: 16px; height: 16px; stroke: var(--muted); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-  .step h3 {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-  }
-  .step p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 80% 20%, rgba(0,113,227,0.05) 0%, transparent 60%),
+              radial-gradient(ellipse 50% 40% at 10% 80%, rgba(0,113,227,0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
 
-  /* ─── FEATURES ─── */
-  .features {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-top: 52px;
-  }
-  .feat {
-    background: var(--bg);
-    padding: 32px 28px;
-    transition: background 0.15s;
-  }
-  .feat:hover { background: var(--bg2); }
-  .feat-dot {
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    margin-bottom: 16px;
-  }
-  .feat h3 {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-  }
-  .feat p { font-size: 0.8125rem; color: var(--muted); line-height: 1.6; }
+.hero-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: rise 0.7s 0.1s forwards;
+}
 
-  /* ─── PRICING ─── */
-  .pricing-wrap { display: flex; justify-content: center; margin-top: 52px; }
-  .pricing-card {
-    width: 100%;
-    max-width: 420px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    overflow: hidden;
-  }
-  .pricing-head {
-    padding: 32px 36px 28px;
-    border-bottom: 1px solid var(--border);
-  }
-  .pricing-plan {
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .pricing-price {
-    display: flex;
-    align-items: flex-start;
-    gap: 2px;
-    margin-bottom: 4px;
-  }
-  .pricing-dollar {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--muted);
-    margin-top: 6px;
-  }
-  .pricing-num {
-    font-size: 3.5rem;
-    font-weight: 700;
-    letter-spacing: -0.05em;
-    color: var(--ink);
-    line-height: 1;
-  }
-  .pricing-per { font-size: 0.875rem; color: var(--muted); margin-bottom: 0; }
-  .pricing-body { padding: 28px 36px 32px; }
-  .pricing-list { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 28px; }
-  .pricing-list li {
-    font-size: 0.875rem;
-    color: var(--ink);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .pricing-list li::before {
-    content: '';
-    width: 16px; height: 16px;
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 8.5L6.5 11.5L12.5 5' stroke='%230071E3' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-size: contain;
-  }
-  .pricing-note {
-    font-size: 0.75rem;
-    color: var(--faint);
-    text-align: center;
-    margin-top: 12px;
-  }
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 8.5vw, 7.5rem);
+  font-weight: 400;
+  line-height: 0.97;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  max-width: 14ch;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: rise 0.8s 0.2s forwards;
+}
 
-  /* ─── CONTACT ─── */
-  .contact-card {
-    max-width: 560px;
-    margin: 52px auto 0;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 40px 44px;
-    text-align: center;
-  }
-  .contact-card p {
-    font-size: 0.9375rem;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 28px;
-  }
-  .contact-email {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    color: var(--accent);
-    text-decoration: none;
-    border: 1px solid var(--border);
-    border-radius: 980px;
-    padding: 10px 22px;
-    transition: background 0.15s, border-color 0.15s;
-  }
-  .contact-email:hover {
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
-    border-color: var(--accent);
-  }
+.hero h1 em {
+  font-style: italic;
+  color: var(--amber);
+}
 
-  /* ─── CTA SECTION ─── */
-  .cta-band {
-    background: var(--ink);
-    padding: 88px max(24px, 5%);
-    text-align: center;
-    transition: background 0.25s;
-  }
-  [data-theme="dark"] .cta-band { background: var(--bg2); border-top: 1px solid var(--border); }
-  .cta-band h2 {
-    font-size: clamp(1.75rem, 4vw, 2.8rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    color: #fff;
-    margin-bottom: 12px;
-  }
-  [data-theme="dark"] .cta-band h2 { color: var(--ink); }
-  .cta-band p {
-    font-size: 1rem;
-    color: rgba(255,255,255,0.55);
-    margin-bottom: 36px;
-    line-height: 1.6;
-  }
-  [data-theme="dark"] .cta-band p { color: var(--muted); }
-  .btn-white {
-    height: 44px;
-    padding: 0 28px;
-    background: #fff;
-    color: #1D1D1F;
-    border-radius: 980px;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    text-decoration: none;
-    display: inline-flex; align-items: center;
-    transition: background 0.15s, transform 0.1s;
-  }
-  .btn-white:hover { background: #F5F5F7; transform: translateY(-1px); }
-  [data-theme="dark"] .btn-white { background: var(--accent); color: #fff; }
-  [data-theme="dark"] .btn-white:hover { background: var(--accent-h); }
+.hero-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: rise 0.8s 0.4s forwards;
+}
 
-  /* ─── FOOTER ─── */
-  footer {
-    background: var(--ink);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding: 24px max(24px, 5%);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-    transition: background 0.25s;
-  }
-  [data-theme="dark"] footer {
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
-  }
-  .footer-logo {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.85);
-    text-decoration: none;
-    letter-spacing: -0.01em;
-  }
-  [data-theme="dark"] .footer-logo { color: var(--ink); }
-  footer p { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
-  [data-theme="dark"] footer p { color: var(--faint); }
-  footer a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.15s; }
-  [data-theme="dark"] footer a { color: var(--faint); }
-  footer a:hover { color: rgba(255,255,255,0.75); }
+.hero-sub {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 44ch;
+  font-weight: 300;
+}
 
-  /* ─── FADE IN ─── */
-  .fade { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
-  .fade.d1 { transition-delay: 0.08s; }
-  .fade.d2 { transition-delay: 0.16s; }
-  .fade.in { opacity: 1; transform: none; }
+.hero-sub strong {
+  color: var(--ink);
+  font-weight: 500;
+}
 
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 720px) {
-    .nav-links { display: none; }
-    .section { padding: 64px max(24px, 5%); }
-    .steps, .features { grid-template-columns: 1fr; }
-    .stats-bar { grid-template-columns: repeat(2, 1fr); }
-    .stats-bar .stat-item:nth-child(2) { border-right: none; }
-    .stats-bar .stat-item:nth-child(3),
-    .stats-bar .stat-item:nth-child(4) { border-top: 1px solid var(--border); }
-    .pricing-card { max-width: 100%; }
-    footer { justify-content: center; text-align: center; }
-  }
+.hero-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  height: 50px;
+  padding: 0 28px;
+  background: var(--amber);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.12s;
+  white-space: nowrap;
+}
+.btn-primary:hover { background: var(--amber-d); transform: translateY(-2px); }
+
+.btn-secondary {
+  height: 50px;
+  padding: 0 24px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.btn-secondary:hover { border-color: var(--muted); color: var(--ink); }
+
+/* ── TICKER ─────────────────────────────────────── */
+.ticker-wrap {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  padding: 14px 0;
+  background: var(--bg2);
+}
+.ticker-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: ticker 28s linear infinite;
+}
+.ticker-item {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 40px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.ticker-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--amber);
+  flex-shrink: 0;
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── SECTION SHARED ─────────────────────────────── */
+.section {
+  padding: clamp(72px, 10vw, 120px) clamp(20px, 6vw, 88px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-full {
+  padding: clamp(72px, 10vw, 120px) clamp(20px, 6vw, 88px);
+}
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 20px;
+}
+.section-h {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.section-h em { font-style: italic; color: var(--amber); }
+.section-sub {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 46ch;
+  font-weight: 300;
+}
+
+/* ── PROBLEM SECTION ─────────────────────────────── */
+.problem {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.problem-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 44px;
+}
+.problem-item {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  font-weight: 300;
+}
+.problem-item:first-child { border-top: 1px solid var(--border); }
+.problem-x {
+  color: var(--faint);
+  font-size: 1.1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.problem-stat-block {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.problem-stat {
+  padding: 28px 32px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.stat-big {
+  font-family: var(--serif);
+  font-size: 3.5rem;
+  font-weight: 400;
+  color: var(--amber);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.stat-desc {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ── PROCESS ─────────────────────────────────────── */
+.process-section {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.process-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(72px, 10vw, 120px) clamp(20px, 6vw, 88px);
+}
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-top: 56px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.process-step {
+  background: var(--bg2);
+  padding: 44px 36px;
+  transition: background 0.2s;
+}
+.process-step:hover { background: var(--bg3); }
+.step-index {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  font-style: italic;
+  color: var(--faint);
+  line-height: 1;
+  margin-bottom: 24px;
+}
+.step-h {
+  font-family: var(--serif);
+  font-size: 1.1875rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.step-p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── WHAT'S INCLUDED ─────────────────────────────── */
+.included-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 56px;
+}
+.included-item {
+  background: var(--bg);
+  padding: 32px 28px;
+  transition: background 0.2s;
+}
+.included-item:hover { background: var(--bg2); }
+.included-marker {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.included-marker svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--amber);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.included-h {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.included-p {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+/* ── PRICING ─────────────────────────────────────── */
+.pricing-section {
+  border-top: 1px solid var(--border);
+}
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 56px;
+}
+.pricing-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.pricing-card:hover {
+  border-color: var(--amber);
+  transform: translateY(-4px);
+}
+.pricing-card.featured {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.pricing-card.featured:hover {
+  transform: translateY(-4px);
+  border-color: var(--amber);
+}
+.card-head {
+  padding: 28px 28px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.pricing-card.featured .card-head {
+  border-color: rgba(255,255,255,0.1);
+}
+.plan-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.pricing-card.featured .plan-label { color: rgba(255,255,255,0.45); }
+
+.price-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+.price-dollar {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1;
+}
+.pricing-card.featured .price-dollar { color: rgba(255,255,255,0.4); }
+.price-num {
+  font-family: var(--serif);
+  font-size: 3.75rem;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.pricing-card.featured .price-num { color: #fff; }
+.price-per {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  font-weight: 300;
+}
+.pricing-card.featured .price-per { color: rgba(255,255,255,0.4); }
+.card-body { padding: 24px 28px 28px; }
+.feature-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-bottom: 28px;
+}
+.feature-list li {
+  font-size: 0.875rem;
+  color: var(--muted);
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pricing-card.featured .feature-list li { color: rgba(255,255,255,0.7); }
+.check {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  stroke: var(--amber);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pricing-card.featured .check { stroke: rgba(255,255,255,0.8); }
+
+.btn-card-dark {
+  width: 100%;
+  height: 44px;
+  background: #fff;
+  color: var(--ink);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.btn-card-dark:hover { background: #F0F0EE; }
+
+.btn-card-ghost {
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-card-ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+.plan-note {
+  font-size: 0.6875rem;
+  color: var(--faint);
+  text-align: center;
+  margin-top: 10px;
+}
+.pricing-card.featured .plan-note { color: rgba(255,255,255,0.3); }
+
+.popular-badge {
+  display: inline-block;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--amber);
+  color: #fff;
+  padding: 3px 9px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+/* ── DARK MODE: featured card overrides ─────────── */
+[data-theme="dark"] .pricing-card.featured {
+  background: var(--bg3);
+  border-color: var(--amber);
+}
+[data-theme="dark"] .pricing-card.featured .card-head { border-color: var(--border); }
+[data-theme="dark"] .pricing-card.featured .price-num { color: var(--ink); }
+[data-theme="dark"] .pricing-card.featured .plan-label { color: var(--muted); }
+[data-theme="dark"] .pricing-card.featured .price-dollar { color: var(--muted); }
+[data-theme="dark"] .pricing-card.featured .price-per { color: var(--muted); }
+[data-theme="dark"] .pricing-card.featured .feature-list li { color: var(--muted); }
+[data-theme="dark"] .pricing-card.featured .check { stroke: var(--amber); }
+[data-theme="dark"] .pricing-card.featured .plan-note { color: var(--faint); }
+[data-theme="dark"] .popular-badge { background: var(--amber); color: #fff; }
+[data-theme="dark"] .btn-card-dark { background: var(--amber); color: #fff; }
+[data-theme="dark"] .btn-card-dark:hover { background: var(--amber-d); }
+
+/* ── OBJECTIONS ──────────────────────────────────── */
+.objections-section {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.objections-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(72px, 10vw, 120px) clamp(20px, 6vw, 88px);
+}
+.objections-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 56px;
+}
+.obj-item {
+  background: var(--bg2);
+  padding: 36px 36px;
+  transition: background 0.2s;
+}
+.obj-item:hover { background: var(--bg3); }
+.obj-q {
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  font-style: italic;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.obj-a {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── CTA BAND ────────────────────────────────────── */
+.cta-section {
+  padding: clamp(80px, 12vw, 140px) clamp(20px, 6vw, 88px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(0,113,227,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-section h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  max-width: 18ch;
+  margin: 0 auto 24px;
+}
+.cta-section h2 em { font-style: italic; color: var(--amber); }
+.cta-section p {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 42ch;
+  margin: 0 auto 40px;
+  font-weight: 300;
+}
+.cta-sub {
+  font-size: 0.8125rem;
+  color: var(--faint);
+  margin-top: 16px;
+}
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 28px clamp(20px, 6vw, 88px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-text {
+  font-size: 0.8125rem;
+  color: var(--faint);
+}
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+.footer-links a {
+  font-size: 0.8125rem;
+  color: var(--faint);
+  transition: color 0.15s;
+}
+.footer-links a:hover { color: var(--muted); }
+
+/* ── ANIMATIONS ──────────────────────────────────── */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.d1 { transition-delay: 0.08s; }
+.reveal.d2 { transition-delay: 0.16s; }
+.reveal.d3 { transition-delay: 0.24s; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 900px) {
+  .problem { grid-template-columns: 1fr; gap: 48px; }
+  .process-steps { grid-template-columns: 1fr; }
+  .included-grid { grid-template-columns: 1fr 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+  .objections-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .included-grid { grid-template-columns: 1fr; }
+  footer { justify-content: center; text-align: center; }
+  .hero-row { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .hero-label, .hero h1, .hero-row { animation: none; opacity: 1; transform: none; transition: none; }
+}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="nav-logo" aria-label="Arcpost">
-    <svg width="110" height="22" viewBox="0 0 110 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="0" y="0" width="26" height="4" rx="2" fill="#0071E3"/>
-      <rect x="0" y="9" width="17" height="4" rx="2" fill="#0071E3" opacity="0.55"/>
-      <rect x="0" y="18" width="9" height="4" rx="2" fill="#0071E3" opacity="0.28"/>
-      <text x="36" y="16" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="600" letter-spacing="-0.4" fill="currentColor">arcpost</text>
-    </svg>
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">
+      <span></span><span></span><span></span>
+    </div>
+    arcpost
   </a>
   <div class="nav-links">
     <a href="#how">How it works</a>
-    <a href="#features">Features</a>
+    <a href="#included">What's included</a>
     <a href="#pricing">Pricing</a>
-    <a href="#contact">Contact</a>
+    <a href="#faq">FAQ</a>
   </div>
   <div class="nav-right">
-    <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
-      <svg id="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      <svg id="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <button class="theme-toggle" id="themeBtn" aria-label="Toggle dark mode">
+      <!-- moon (shown in light mode) -->
+      <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <!-- sun (shown in dark mode) -->
+      <svg id="icon-sun" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
     </button>
-    <a href="#pricing" class="nav-cta">Get started</a>
+    <a href="mailto:helloarcpost@gmail.com" class="nav-cta">Start today</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-eyebrow fade"><span>v1.0</span> &nbsp;·&nbsp; Content as a service</div>
-  <h1 class="fade d1">AI/Tech content.<br><span class="dim">Every month. Done.</span></h1>
-  <p class="hero-sub fade d2">Four SEO-optimized articles delivered to your inbox monthly. Built for creators and businesses that publish consistently but don't have time to write.</p>
-  <div class="hero-actions fade">
-    <a href="#pricing" class="btn-blue">Get started — $49/mo</a>
-    <a href="#sample" class="btn-ghost">View sample article ↗</a>
-  </div>
-  <div class="stats-bar fade">
-    <div class="stat-item">
-      <span class="stat-val">4</span>
-      <span class="stat-label">Articles/month</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-val">1.2k</span>
-      <span class="stat-label">Words each</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-val">SEO</span>
-      <span class="stat-label">Optimized</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-val">$49</span>
-      <span class="stat-label">Per month</span>
+  <div class="hero-noise"></div>
+  <div class="hero-gradient"></div>
+  <p class="hero-label">Content as a service &nbsp;·&nbsp; Open for new clients</p>
+  <h1>Your blog. <em>Written.</em> Every month.</h1>
+  <div class="hero-row">
+    <p class="hero-sub">
+      You know you should be publishing. <strong>You just never do.</strong> Arcpost delivers 
+      SEO-ready articles on AI, Tech, and Marketing, delivered straight to your inbox, so your 
+      content actually ships.
+    </p>
+    <div class="hero-actions">
+      <a href="mailto:helloarcpost@gmail.com" class="btn-primary">
+        Get started
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#how" class="btn-secondary">See how it works</a>
     </div>
   </div>
 </div>
 
-<hr class="hr">
-
-<!-- HOW IT WORKS -->
-<div class="section" id="how">
-  <div class="fade">
-    <p class="section-tag">// how_it_works</p>
-    <h2 class="section-h">Set up once.<br>Content ships monthly.</h2>
-    <p class="section-sub">Brief us on your brand and topics. We handle everything after that.</p>
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <!-- repeated twice for seamless loop -->
+    <div class="ticker-item"><span class="ticker-dot"></span>SEO-optimized articles</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>800–1,200 words each</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Delivered as Google Docs</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>AI, Tech &amp; Marketing</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>One revision per article</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Starts at $15/month</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Cancel anytime</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>SEO-optimized articles</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>800–1,200 words each</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Delivered as Google Docs</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>AI, Tech &amp; Marketing</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>One revision per article</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Starts at $15/month</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Cancel anytime</div>
   </div>
-  <div class="steps fade d1">
-    <div class="step">
-      <span class="step-num">STEP_01</span>
-      <div class="step-icon">
-        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-      </div>
-      <h3>Brief us once</h3>
-      <p>Share your brand voice, target audience, and any topics you want covered. Takes under five minutes.</p>
+</div>
+
+<!-- PROBLEM -->
+<div class="section reveal">
+  <div class="problem">
+    <div>
+      <p class="eyebrow">The real problem</p>
+      <h2 class="section-h">You're not lazy. You're <em>overloaded.</em></h2>
+      <p class="section-sub">Content is the one thing that compounds over time. Every blog post is a permanent asset. But you already have a business to run.</p>
+      <ul class="problem-list">
+        <li class="problem-item">
+          <span class="problem-x">—</span>
+          You open a blank doc, write two sentences, close it.
+        </li>
+        <li class="problem-item">
+          <span class="problem-x">—</span>
+          You post once in a blue moon, then go quiet for weeks.
+        </li>
+        <li class="problem-item">
+          <span class="problem-x">—</span>
+          You hire a freelancer who disappears after one article.
+        </li>
+        <li class="problem-item">
+          <span class="problem-x">—</span>
+          You try to DIY it. It takes hours and you're still not happy.
+        </li>
+      </ul>
     </div>
-    <div class="step">
-      <span class="step-num">STEP_02</span>
-      <div class="step-icon">
-        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    <div class="problem-stat-block">
+      <div class="problem-stat reveal d1">
+        <div class="stat-big">70%</div>
+        <p class="stat-desc">of business blogs go dark within six months. Not because the owner stopped caring, but because consistent content is genuinely hard to maintain alone.</p>
       </div>
-      <h3>We write and optimize</h3>
-      <p>Four AI/Tech articles, 800–1200 words each, researched, written, and SEO-optimized for your audience.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">STEP_03</span>
-      <div class="step-icon">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <div class="problem-stat reveal d2">
+        <div class="stat-big">3×</div>
+        <p class="stat-desc">more inbound leads for companies that publish regularly, compared to those who don't. The content gap compounds in both directions.</p>
       </div>
-      <h3>Receive and publish</h3>
-      <p>Articles arrive in your inbox as a clean Google Doc. Copy, paste, publish. No editing required.</p>
     </div>
   </div>
 </div>
 
-<hr class="hr">
-
-<!-- FEATURES -->
-<div class="section" id="features">
-  <div class="fade">
-    <p class="section-tag">// what_is_included</p>
-    <h2 class="section-h">Everything in the package.</h2>
-    <p class="section-sub">No add-ons, no upsells. One price, one plan.</p>
-  </div>
-  <div class="features fade d1">
-    <div class="feat">
-      <div class="feat-dot"></div>
-      <h3>4 articles per month</h3>
-      <p>One article per week. Consistent output without the workload.</p>
+<!-- PROCESS -->
+<div class="process-section" id="how">
+  <div class="process-inner">
+    <div class="reveal">
+      <p class="eyebrow">How it works</p>
+      <h2 class="section-h">Three steps. Then it's off your plate.</h2>
+      <p class="section-sub">You spend fifteen minutes with us once. After that, content arrives every month.</p>
     </div>
-    <div class="feat">
-      <div class="feat-dot"></div>
-      <h3>SEO-optimized</h3>
-      <p>Target keywords and a meta description included with every article.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-dot"></div>
-      <h3>800–1,200 words each</h3>
-      <p>Long enough to rank. Short enough for readers to finish.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-dot"></div>
-      <h3>Google Doc delivery</h3>
-      <p>Formatted and ready to paste into Medium, WordPress, or any CMS.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-dot"></div>
-      <h3>AI/Tech niche</h3>
-      <p>Written specifically for the AI and technology space.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-dot"></div>
-      <h3>One revision per article</h3>
-      <p>Send feedback on any piece. We rewrite it, no questions asked.</p>
+    <div class="process-steps reveal d1">
+      <div class="process-step">
+        <div class="step-index">01</div>
+        <h3 class="step-h">Email to get started</h3>
+        <p class="step-p">Send us a message at helloarcpost@gmail.com. We'll reply within 24 hours with a short brief covering your brand voice, audience, and any topics you want covered.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-index">02</div>
+        <h3 class="step-h">We research and write</h3>
+        <p class="step-p">Every article is researched, drafted, and SEO-optimized with keywords and a meta description included. We cover AI, Tech, and Marketing only, so the quality stays high.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-index">03</div>
+        <h3 class="step-h">You receive and publish</h3>
+        <p class="step-p">Articles arrive as formatted Google Docs, ready to paste into your CMS. No editing. No chasing. If you want changes, one revision per article is on us.</p>
+      </div>
     </div>
   </div>
 </div>
 
-<hr class="hr">
+<!-- WHAT'S INCLUDED -->
+<div class="section" id="included">
+  <div class="reveal">
+    <p class="eyebrow">What's included</p>
+    <h2 class="section-h">Everything. No add-ons.</h2>
+    <p class="section-sub">One price covers everything below. No upsells waiting at checkout.</p>
+  </div>
+  <div class="included-grid reveal d1">
+    <div class="included-item">
+      <div class="included-marker">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p class="included-h">Articles every month</p>
+      <p class="included-p">Consistent output you can publish and share, without writing a single word yourself.</p>
+    </div>
+    <div class="included-item">
+      <div class="included-marker">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p class="included-h">SEO keywords + meta description</p>
+      <p class="included-p">Every article includes target keywords and a ready-to-paste meta description for your CMS.</p>
+    </div>
+    <div class="included-item">
+      <div class="included-marker">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p class="included-h">800–1,200 words each</p>
+      <p class="included-p">Long enough for search engines to rank. Short enough for readers to finish. The sweet spot.</p>
+    </div>
+    <div class="included-item">
+      <div class="included-marker">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p class="included-h">Google Doc delivery</p>
+      <p class="included-p">Formatted and ready. Copy into Medium, WordPress, Ghost, or any CMS in under a minute.</p>
+    </div>
+    <div class="included-item">
+      <div class="included-marker">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p class="included-h">One revision per article</p>
+      <p class="included-p">Don't love something? Tell us. We rewrite it at no extra charge, no arguments.</p>
+    </div>
+    <div class="included-item">
+      <div class="included-marker">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p class="included-h">AI, Tech &amp; Marketing niche</p>
+      <p class="included-p">We specialize. These are the only three niches we write in, which means the content is actually good.</p>
+    </div>
+  </div>
+</div>
 
 <!-- PRICING -->
-<div class="section" id="pricing" style="text-align:center;">
-  <div class="fade">
-    <p class="section-tag" style="text-align:center;">// pricing</p>
-    <h2 class="section-h">One plan. One price.</h2>
-    <p class="section-sub" style="margin:0 auto;">No tiers. No contracts. No hidden fees.</p>
+<div class="section pricing-section" id="pricing">
+  <div class="reveal">
+    <p class="eyebrow">Pricing</p>
+    <h2 class="section-h">Simple pricing. No surprises.</h2>
+    <p class="section-sub">Pick a plan. Email to subscribe. Cancel whenever you like.</p>
   </div>
-  <div class="pricing-wrap fade d1">
+  <div class="pricing-grid reveal d1">
+
+    <!-- Starter -->
     <div class="pricing-card">
-      <div class="pricing-head">
-        <p class="pricing-plan">Starter plan</p>
-        <div class="pricing-price">
-          <span class="pricing-dollar">$</span>
-          <span class="pricing-num">49</span>
+      <div class="card-head">
+        <p class="plan-label">Starter</p>
+        <div class="price-row">
+          <span class="price-dollar">$</span>
+          <span class="price-num">15</span>
         </div>
-        <p class="pricing-per">per month</p>
+        <p class="price-per">per month</p>
       </div>
-      <div class="pricing-body">
-        <ul class="pricing-list">
-          <li>4 articles per month</li>
-          <li>800–1,200 words per article</li>
-          <li>SEO keywords + meta description</li>
-          <li>Google Doc delivery</li>
-          <li>One revision per article</li>
-          <li>AI/Tech niche content</li>
+      <div class="card-body">
+        <ul class="feature-list">
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            2 articles per month
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            800–1,200 words each
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            SEO keywords + meta description
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Google Doc delivery
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            One revision per article
+          </li>
         </ul>
-        <a href="mailto:helloarcpost@gmail.com" class="btn-blue" style="width:100%;justify-content:center;height:44px;border-radius:10px;">Get started →</a>
-        <p class="pricing-note">Cancel anytime. No contracts.</p>
+        <a href="mailto:helloarcpost@gmail.com?subject=Starter Plan" class="btn-card-ghost">Get started →</a>
+        <p class="plan-note">No contracts. Cancel any time.</p>
       </div>
     </div>
+
+    <!-- Standard (featured) -->
+    <div class="pricing-card featured">
+      <div class="card-head">
+        <span class="popular-badge">Most popular</span>
+        <p class="plan-label">Standard</p>
+        <div class="price-row">
+          <span class="price-dollar">$</span>
+          <span class="price-num">35</span>
+        </div>
+        <p class="price-per">per month</p>
+      </div>
+      <div class="card-body">
+        <ul class="feature-list">
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            4 articles per month
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            800–1,200 words each
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            SEO keywords + meta description
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Google Doc delivery
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            One revision per article
+          </li>
+        </ul>
+        <a href="mailto:helloarcpost@gmail.com?subject=Standard Plan" class="btn-card-dark">Get started →</a>
+        <p class="plan-note">No contracts. Cancel any time.</p>
+      </div>
+    </div>
+
+    <!-- Pro -->
+    <div class="pricing-card">
+      <div class="card-head">
+        <p class="plan-label">Pro</p>
+        <div class="price-row">
+          <span class="price-dollar">$</span>
+          <span class="price-num">65</span>
+        </div>
+        <p class="price-per">per month</p>
+      </div>
+      <div class="card-body">
+        <ul class="feature-list">
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            8 articles per month
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            800–1,200 words each
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            SEO keywords + meta description
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Google Doc delivery
+          </li>
+          <li>
+            <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            One revision per article
+          </li>
+        </ul>
+        <a href="mailto:helloarcpost@gmail.com?subject=Pro Plan" class="btn-card-ghost">Get started →</a>
+        <p class="plan-note">No contracts. Cancel any time.</p>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- CONTACT -->
-<hr class="hr">
-<div class="section" id="contact" style="text-align:center;">
-  <div class="fade">
-    <p class="section-tag" style="text-align:center;">// contact</p>
-    <h2 class="section-h">Got a question?</h2>
-    <p class="section-sub" style="margin:0 auto;">Reach out directly. We respond within 24 hours.</p>
-  </div>
-  <div class="contact-card fade d1">
-    <p>Whether you want to know more about what's included, have a specific niche in mind, or just want to talk before subscribing — send an email.</p>
-    <a href="mailto:helloarcpost@gmail.com" class="contact-email">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-      helloarcpost@gmail.com
-    </a>
+<!-- FAQ / OBJECTIONS -->
+<div class="objections-section" id="faq">
+  <div class="objections-inner">
+    <div class="reveal">
+      <p class="eyebrow">Questions</p>
+      <h2 class="section-h">The things people always ask.</h2>
+    </div>
+    <div class="objections-grid reveal d1">
+      <div class="obj-item">
+        <p class="obj-q">"Is this actually written by a human?"</p>
+        <p class="obj-a">Yes. Every article is written by Nelson, with AI tools used for research and structure. The final output is reviewed, edited, and human-written. Not a raw AI dump with a light edit.</p>
+      </div>
+      <div class="obj-item">
+        <p class="obj-q">"What if I don't like an article?"</p>
+        <p class="obj-a">Every plan includes one free revision per article. Tell us what to change and we rewrite it. No drama, no extra charge.</p>
+      </div>
+      <div class="obj-item">
+        <p class="obj-q">"Can I choose my own topics?"</p>
+        <p class="obj-a">Yes. When you brief us, you can specify topics, angles, target keywords, or competitors you want to reference. We work from your direction, not ours.</p>
+      </div>
+      <div class="obj-item">
+        <p class="obj-q">"What niches do you cover?"</p>
+        <p class="obj-a">AI, Tech, and Marketing only. We stay in these three because depth matters more than breadth. If your audience is in one of these spaces, we write for them well.</p>
+      </div>
+      <div class="obj-item">
+        <p class="obj-q">"How do I receive the articles?"</p>
+        <p class="obj-a">As shared Google Docs. Formatted, clean, and ready to paste into your CMS or newsletter platform. No attachments, no proprietary formats.</p>
+      </div>
+      <div class="obj-item">
+        <p class="obj-q">"How do I pay?"</p>
+        <p class="obj-a">Via Payoneer. After you email to subscribe, we send an invoice with payment details. Payment is collected at the start of each month before articles are delivered.</p>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- CTA BAND -->
-<div class="cta-band" id="sample">
-  <h2 class="fade">Stop staring at a blank page.</h2>
-  <p class="fade d1">Arcpost handles your AI/Tech content every month.<br>You focus on everything else.</p>
-  <a href="mailto:helloarcpost@gmail.com" class="btn-white fade d2">Start publishing →</a>
+<div class="cta-section">
+  <h2 class="reveal">Stop <em>meaning to</em> publish.<br>Just publish.</h2>
+  <p class="reveal d1">Arcpost handles your content calendar every month. You stay focused on your actual work. First batch of articles ships within 5 business days of your brief.</p>
+  <a href="mailto:helloarcpost@gmail.com" class="btn-primary reveal d2" style="display:inline-flex; margin: 0 auto;">
+    Email to get started
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+  <p class="cta-sub reveal d3">helloarcpost@gmail.com &nbsp;·&nbsp; Reply within 24 hours</p>
 </div>
 
 <!-- FOOTER -->
 <footer>
-  <a href="#" class="footer-logo" aria-label="Arcpost">
-    <svg width="100" height="20" viewBox="0 0 110 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="0" y="0" width="26" height="4" rx="2" fill="#2997FF"/>
-      <rect x="0" y="9" width="17" height="4" rx="2" fill="#2997FF" opacity="0.55"/>
-      <rect x="0" y="18" width="9" height="4" rx="2" fill="#2997FF" opacity="0.28"/>
-      <text x="36" y="16" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="600" letter-spacing="-0.4" fill="rgba(255,255,255,0.85)">arcpost</text>
-    </svg>
-  </a>
-  <p>© 2026 Arcpost. Built by Nelson Phiri</p>
+  <div class="footer-left">
+    <div class="logo-mark">
+      <span></span><span></span><span></span>
+    </div>
+    <span class="footer-text">© 2026 Arcpost · Built by Nelson Phiri</span>
+  </div>
+  <div class="footer-links">
+    <a href="mailto:helloarcpost@gmail.com">helloarcpost@gmail.com</a>
+    <a href="https://arcpost.netlify.app">arcpost.netlify.app</a>
+  </div>
 </footer>
 
 <script>
   // Nav scroll
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', scrollY > 10);
+    nav.classList.toggle('scrolled', scrollY > 30);
   }, { passive: true });
 
   // Theme toggle
-  const btn = document.getElementById('themeBtn');
-  const moon = document.getElementById('icon-moon');
-  const sun  = document.getElementById('icon-sun');
-  const html = document.documentElement;
+  const themeBtn = document.getElementById('themeBtn');
+  const iconMoon = document.getElementById('icon-moon');
+  const iconSun  = document.getElementById('icon-sun');
+  const html     = document.documentElement;
+
   const saved = localStorage.getItem('arcpost-theme') || 'light';
   html.setAttribute('data-theme', saved);
-  if (saved === 'dark') { moon.style.display = 'none'; sun.style.display = 'block'; }
+  if (saved === 'dark') { iconMoon.style.display = 'none'; iconSun.style.display = 'block'; }
 
-  btn.addEventListener('click', () => {
+  themeBtn.addEventListener('click', () => {
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('arcpost-theme', next);
-    if (next === 'dark') { moon.style.display = 'none'; sun.style.display = 'block'; }
-    else { sun.style.display = 'none'; moon.style.display = 'block'; }
+    if (next === 'dark') { iconMoon.style.display = 'none'; iconSun.style.display = 'block'; }
+    else { iconSun.style.display = 'none'; iconMoon.style.display = 'block'; }
   });
 
-  // Fade in on scroll
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+  // Reveal on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
