@@ -492,6 +492,54 @@ nav.scrolled {
   font-weight: 300;
 }
 
+/* ── SAMPLE ──────────────────────────────────────── */
+.sample-card {
+  margin-top: 56px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: clamp(32px, 5vw, 56px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
+}
+.sample-meta {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.sample-h {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.sample-excerpt {
+  font-size: 0.9375rem;
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 300;
+  max-width: 58ch;
+}
+.sample-excerpt em {
+  font-style: italic;
+  color: var(--ink);
+  font-weight: 400;
+}
+.sample-actions {
+  flex-shrink: 0;
+}
+@media (max-width: 760px) {
+  .sample-card { grid-template-columns: 1fr; }
+}
+
 /* ── PRICING ─────────────────────────────────────── */
 .pricing-section {
   border-top: 1px solid var(--border);
@@ -824,6 +872,7 @@ footer {
   <div class="nav-links">
     <a href="#how">How it works</a>
     <a href="#included">What's included</a>
+    <a href="#sample">Sample</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
   </div>
@@ -997,6 +1046,25 @@ footer {
       </div>
       <p class="included-h">AI, Tech &amp; Marketing niche</p>
       <p class="included-p">We specialize. These are the only three niches we write in, which means the content is actually good.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SAMPLE -->
+<div class="section" id="sample">
+  <div class="reveal">
+    <p class="eyebrow">Sample work</p>
+    <h2 class="section-h">What you'd actually get.</h2>
+    <p class="section-sub">One real article, published for a client. Same quality ships every month.</p>
+  </div>
+  <div class="sample-card reveal d1">
+    <div>
+      <p class="sample-meta">Article · 3 min read · Published on Medium</p>
+      <h3 class="sample-h">Why your content schedule keeps falling apart (and what actually fixes it)</h3>
+      <p class="sample-excerpt"><em>"You planned to publish every week. You published twice in January, once in March, and nothing since."</em> Most creators don't stop publishing because they're lazy. They stop because writing takes longer than it looks, and the backlog never clears. This piece breaks down why the problem is structural, not a discipline issue, and what actually fixes it.</p>
+    </div>
+    <div class="sample-actions">
+      <a href="https://medium.com/@arcpost/why-your-content-schedule-keeps-falling-apart-and-what-actually-fixes-it-53360efbb6ae" target="_blank" rel="noopener" class="btn-secondary">Read the full article →</a>
     </div>
   </div>
 </div>
